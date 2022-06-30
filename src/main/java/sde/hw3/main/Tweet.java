@@ -1,8 +1,11 @@
 package sde.hw3.main;
 
 import java.util.ArrayList;
+import java.util.regex.*;
 
 public class Tweet {
+	private static Pattern hashTagPattern = Pattern.compile("#[A-Za-z0-9]+");
+	
     private Coordinate coordinates; //location where the tweet originates
     private String timeStamp; //The timestamp of when the tweet was sent
     private String text; //the content of the tweet
@@ -38,14 +41,14 @@ public class Tweet {
         if (hashTagsMemo != null) {
             return hashTagsMemo;
         }
-        //Otherwise, initialize the memo and populate it
+        
         hashTagsMemo = new ArrayList<>();
-        String[] textSplit = text.split("\\s+");
-        for (String s : textSplit) { //for each token
-            if (s.startsWith("#")) {//if a hashtag
-                hashTagsMemo.add(s);
-            }
+        Matcher matcher = hashTagPattern.matcher(text);
+        
+        while (matcher.find()) {
+        	hashTagsMemo.add(matcher.group().toLowerCase());
         }
+  
         return hashTagsMemo;
     }
 }
