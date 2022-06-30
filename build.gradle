@@ -1,18 +1,32 @@
 apply plugin: 'java'
 
 // uncomment the line below if using Eclipse
-// apply plugin: 'eclipse'
+apply plugin: 'eclipse'
 
 repositories {
 	mavenCentral()
 }
 
+jar {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	
+	manifest {
+		attributes 'Main-Class': 'sde.hw3.main.GeoTweets'
+	}    
+	
+	from {
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
 
 //Note that the setup below will automatically add JUnit Jupiter to your project
 
 dependencies {
 	//Dependencies go here
 	//Ex. implementation group: 'org.apache.logging.log4j', name: 'log4-core', version: '2.17.2'
+	implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.2'
+	implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
+	implementation group: 'org.apache.poi', name: 'poi', version: '5.2.2'
 
 	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.8.2'
 }
